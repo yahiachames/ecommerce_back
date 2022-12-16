@@ -4,7 +4,8 @@ from decouple import config
 BASE_DIR = os.path.dirname(os.path.dirname(
     os.path.dirname(os.path.abspath(__file__))))
 
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = 'kobl@t=yw9d*0y%jt2gjnq78=u!z_rrxb&w8e47l!(jz@m79zy'
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -33,6 +34,20 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ecommerce',
+        'USER': 'admin',
+        'PASSWORD': 'admin',
+        'HOST': '163.172.128.43',
+        'PORT': '3306',
+    }
+}
+
+STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC_KEY')
+STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET_KEY')
+
 
 ROOT_URLCONF = 'djecommerce.urls'
 
