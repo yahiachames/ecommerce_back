@@ -19,6 +19,6 @@ a2ensite django_project
 a2dissite 000-default.conf
 a2enmod rewrite ssl
 venv/bin/python3 manage.py migrate
-venv/bin/python3 manage.py scollectstatic
+venv/bin/python3 manage.py collectstatic
 systemctl restart apache2
 
