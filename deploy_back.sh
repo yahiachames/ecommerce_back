@@ -5,6 +5,7 @@ cd /app
 apt install -y git
 git clone -b master https://github.com/yahiachames/ecommerce_back.git 
 cd ecommerce_back
+cp ~/.env /app/ecommerce_back/
 apt update
 apt-get -y install python3-pip && apt-get -y install python3-venv && apt-get install python3-dev libmysqlclient-dev
 apt-get install -y apt-utils vim curl apache2 apache2-utils
