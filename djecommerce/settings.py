@@ -1,12 +1,13 @@
 import os
 from decouple import config
-
+import environ
 BASE_DIR = os.path.dirname(
     os.path.dirname(os.path.abspath(__file__)))
-
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = 'kobl@t=yw9d*0y%jt2gjnq78=u!z_rrxb&w8e47l!(jz@m79zy'
 DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '163.172.148.246']
+ALLOWED_HOSTS = ['163.172.148.246', env("SERVER_HOST")]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -39,10 +40,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ecommerce',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST': '163.172.128.43',
-        'PORT': '3306',
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASSWORD"),
+        'HOST': env("DB_HOST"),
+        'PORT': '29404',
     }
 }
 
@@ -80,11 +81,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_root')]
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static_root'),
+    '/var/www/static/',
+]
 
-# Auth
+# Authoot
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
