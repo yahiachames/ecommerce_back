@@ -9,10 +9,14 @@ from .views import (
     remove_single_item_from_cart,
     PaymentView,
     AddCouponView,
-    RequestRefundView
+    RequestRefundView,
+    ProductListViewSet
 )
+from rest_framework_nested import routers
 
 app_name = 'core'
+router = routers.DefaultRouter()
+router.register("product_list", ProductListViewSet)
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
@@ -25,5 +29,7 @@ urlpatterns = [
     path('remove-item-from-cart/<slug>/', remove_single_item_from_cart,
          name='remove-single-item-from-cart'),
     path('payment/<payment_option>/', PaymentView.as_view(), name='payment'),
-    path('request-refund/', RequestRefundView.as_view(), name='request-refund')
-]
+    path('request-refund/', RequestRefundView.as_view(), name='request-refund'),
+
+
+] + router.urls

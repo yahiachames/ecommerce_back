@@ -1,6 +1,6 @@
 import random
 import string
-
+import json
 import stripe
 from django.conf import settings
 from django.contrib import messages
@@ -11,9 +11,11 @@ from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
-
+from django.http import JsonResponse, HttpResponse
+from rest_framework.viewsets import ModelViewSet
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
 from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile
+from .serializers import ProductListSerializer
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -27,6 +29,32 @@ def products(request):
         'items': Item.objects.all()
     }
     return render(request, "products.html", context)
+
+
+class ProductListViewSet(ModelViewSet):
+
+    queryset = Item.objects.all()
+    serializer_class = ProductListSerializer
+
+
+def products_list(request):
+    #  title = models.CharField(max_length=100)
+    # price = models.FloatField()
+    # discount_price = models.FloatField(blank=True, null=True)
+    # category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
+    # label = models.CharField(choices=LABEL_CHOICES, max_length=1)
+    # slug = models.SlugField()
+    # description = models.TextField()
+    # image = models.ImageField()
+    items = Item.objects.all()
+    dict_items = []
+    for item in items:
+        dict_item = {'title': item.title, 'price': item.price,
+                     'discount_price': item.discount_price, 'description': item.description,
+                     'label': item.label, 'description': item.description,
+                     'slug': item.slug}
+        dict_items.append(dict_item)
+    return HttpResponse(dict_items)
 
 
 def is_valid_form(values):
@@ -213,7 +241,7 @@ class PaymentView(View):
             context = {
                 'order': order,
                 'DISPLAY_COUPON_FORM': False,
-                'STRIPE_PUBLIC_KEY' : settings.STRIPE_PUBLIC_KEY
+                'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY
             }
             userprofile = self.request.user.userprofile
             if userprofile.one_click_purchasing:
