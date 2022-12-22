@@ -61,13 +61,10 @@ CORS_ALLOW_HEADERS = (
     'Access-Control-Allow-Origin',
     'sentry-trace'
 )
-# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True
 
-# ALLOWED_HOSTS = ['*']
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
-    "http://127.0.0.1:3000"
-]
+ALLOWED_HOSTS = ['*']
+
 
 DATABASES = {
     'default': {
